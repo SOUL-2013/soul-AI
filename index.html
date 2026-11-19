@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUL-AI | Soumadip Orbit Universal Labs</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0b0d13;
+            --bg-secondary: #131620;
+            --bg-tertiary: #1c202e;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3348;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Gradient Text */
+        .soul-gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Markdown Content Styling */
+        .markdown-body p {
+            margin-bottom: 0.75rem;
+            line-height: 1.65;
+        }
+        .markdown-body p:last-child {
+            margin-bottom: 0;
+        }
+        .markdown-body ul, .markdown-body ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .markdown-body ul {
+            list-style-type: disc;
+        }
+        .markdown-body ol {
+            list-style-type: decimal;
+        }
+        .markdown-body li {
+            margin-bottom: 0.25rem;
+        }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #f8fafc;
+        }
+        .markdown-body h1 { font-size: 1.5rem; }
+        .markdown-body h2 { font-size: 1.25rem; }
+        .markdown-body h3 { font-size: 1.1rem; }
+        .markdown-body pre {
+            background-color: #0d1117 !important;
+            border: 1px solid #30363d;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 0.75rem 0;
+            position: relative;
+        }
+        .markdown-body code:not(pre code) {
+            background-color: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.375rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875em;
+        }
+        .markdown-body blockquote {
+            border-left: 3px solid #8b5cf6;
+            padding-left: 1rem;
+            color: #94a3b8;
+            font-style: italic;
+            margin: 0.75rem 0;
+        }
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+        }
+        .markdown-body th, .markdown-body td {
+            border: 1px solid #2d3348;
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+        .markdown-body th {
+            background-color: #1c202e;
+        }
+
+        /* Animations */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .ambient-orb {
+            animation: pulseGlow 8s infinite ease-in-out;
+        }
+
+        .typing-dot {
+            animation: typingBounce 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <!-- Ambient Background Effects -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="ambient-orb absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
+        <div class="ambient-orb absolute top-1/2 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 hidden lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-72 bg-[#11141d] border-r border-slate-800/80 flex flex-col transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <!-- Brand Header -->
+        <div class="p-4 border-b border-slate-800/80 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i data-lucide="orbit" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg tracking-tight text-white leading-none">SOUL-AI</h1>
+                    <span class="text-[10px] uppercase tracking-widest text-indigo-400 font-semibold">Orbit Universal Labs</span>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden p-1.5 text-slate-400 hover:text-white rounded-lg">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- New Chat Button -->
+        <div class="p-3">
+            <button onclick="startNewChat()" class="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-indigo-600/15 hover:bg-indigo-600/25 border border-indigo-500/30 text-indigo-300 font-medium text-sm transition-all group">
+                <i data-lucide="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform"></i>
+                <span>New Conversation</span>
+            </button>
+        </div>
+
+        <!-- Chat History List -->
+        <div class="flex-1 overflow-y-auto px-3 py-2 space-y-1">
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Recent Sessions</div>
+            <div id="historyList" class="space-y-1">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Creator & Custom Training Controls -->
+        <div class="p-3 border-t border-slate-800/80 space-y-2 bg-[#0e1118]">
+            <button onclick="openModal('aboutModal')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800/70 text-slate-300 text-sm transition-colors text-left">
+                <div class="w-7 h-7 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                    <i data-lucide="user-check" class="w-4 h-4"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="font-medium text-slate-200 truncate">Soumadip Biswas</div>
+                    <div class="text-[11px] text-slate-400 truncate">Creator & Founder of SOUL</div>
+                </div>
+            </button>
+
+            <button onclick="openModal('trainModal')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 text-xs text-slate-300 transition-colors">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>Unlimited Memory Training</span>
+                </span>
+                <span id="memoryBadge" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">Active</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col h-full relative z-10 min-w-0">
+        <!-- Top Navigation Bar -->
+        <header class="h-14 border-b border-slate-800/60 bg-[#0b0d13]/80 backdrop-blur-md px-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-400 hover:text-white rounded-lg">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800 rounded-full px-3 py-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <select id="modelSelector" class="bg-transparent text-xs font-medium text-slate-200 focus:outline-none cursor-pointer">
+                        <option value="openai" class="bg-slate-900">SOUL-AI Core (GPT-4o Engine)</option>
+                        <option value="mistral" class="bg-slate-900">SOUL-AI Swift (Mistral Engine)</option>
+                        <option value="llama" class="bg-slate-900">SOUL-AI Open (Llama Engine)</option>
+                        <option value="searchgpt" class="bg-slate-900">SOUL-AI Web Search</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/70 px-3 py-1 rounded-full border border-slate-800">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    Zero API Key • Pollinations Engine
+                </span>
+                <button onclick="clearCurrentChat()" title="Clear Chat" class="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-slate-800/50 transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat Messages Container -->
+        <div id="chatContainer" class="flex-1 overflow-y-auto px-4 sm:px-6 py-6 scroll-smooth">
+            <div class="max-w-3xl mx-auto space-y-6" id="messagesWrapper">
+                
+                <!-- Welcome Screen -->
+                <div id="welcomeScreen" class="py-8 sm:py-12 text-center space-y-8">
+                    <div class="space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-2">
+                            <i data-lucide="orbit" class="w-3.5 h-3.5"></i>
+                            Soumadip Orbit Universal Labs (SOUL)
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">
+                            Hello, I'm <span class="soul-gradient-text">SOUL-AI</span>
+                        </h2>
+                        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+                            Created by <span class="text-slate-200 font-medium">Soumadip Biswas</span>. Powered by Pollinations AI with zero API keys required. Ask me anything about coding, AI, SOUL projects, or generate images using <code class="text-indigo-300 bg-indigo-950/60 px-1.5 py-0.5 rounded text-xs">/imagine</code>.
+                        </p>
+                    </div>
+
+                    <!-- Quick Prompt Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-left">
+                        <button onclick="usePrompt('Who created you and what is Soumadip Orbit Universal Labs (SOUL)?')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-indigo-500/40 transition-all group">
+                            <div class="flex items-center gap-2.5 text-indigo-400 font-medium text-sm mb-1">
+                                <i data-lucide="user" class="w-4 h-4"></i>
+                                <span>About Soumadip & SOUL</span>
+                            </div>
+                            <p class="text-xs text-slate-400 group-hover:text-slate-300">Learn about my creator Soumadip Biswas, his vision, and SOUL projects.</p>
+                        </button>
+
+                        <button onclick="usePrompt('Tell me about all the projects under SOUL like SOUL CYBERGUARD, PixelHorizon, and Orvanta.')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-purple-500/40 transition-all group">
+                            <div class="flex items-center gap-2.5 text-purple-400 font-medium text-sm mb-1">
+                                <i data-lucide="layers" class="w-4 h-4"></i>
+                                <span>Explore SOUL Ecosystem</span>
+                            </div>
+                            <p class="text-xs text-slate-400 group-hover:text-slate-300">Discover SOUL CYBERGUARD, PixelHorizon, Orvanta & more.</p>
+                        </button>
+
+                        <button onclick="usePrompt('Write a clean, modern Rust or Python starter script for an AI project.')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-emerald-500/40 transition-all group">
+                            <div class="flex items-center gap-2.5 text-emerald-400 font-medium text-sm mb-1">
+                                <i data-lucide="code-2" class="w-4 h-4"></i>
+                                <span>Code & Tech Assistant</span>
+                            </div>
+                            <p class="text-xs text-slate-400 group-hover:text-slate-300">Get help with HTML/JS, Python, C, Rust, Firebase & Supabase.</p>
+                        </button>
+
+                        <button onclick="usePrompt('/imagine futuristic cosmic laboratory floating in orbit, neon blue and purple, ultra detailed')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-pink-500/40 transition-all group">
+                            <div class="flex items-center gap-2.5 text-pink-400 font-medium text-sm mb-1">
+                                <i data-lucide="image" class="w-4 h-4"></i>
+                                <span>Generate AI Art</span>
+                            </div>
+                            <p class="text-xs text-slate-400 group-hover:text-slate-300">Type <span class="text-pink-300 font-mono">/imagine</span> followed by a prompt to create instant visuals.</p>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 bg-gradient-to-t from-[#0b0d13] via-[#0b0d13] to-transparent">
+            <div class="max-w-3xl mx-auto">
+                <form id="chatForm" onsubmit="handleSendMessage(event)" class="relative flex items-end gap-2 bg-[#131620] border border-slate-700/80 focus-within:border-indigo-500/70 rounded-2xl p-2 shadow-xl shadow-black/40 transition-colors">
+                    <button type="button" onclick="insertImaginePrefix()" title="Generate Image (/imagine)" class="p-2.5 text-slate-400 hover:text-pink-400 hover:bg-slate-800/70 rounded-xl transition-colors shrink-0">
+                        <i data-lucide="image-plus" class="w-5 h-5"></i>
+                    </button>
+                    
+                    <textarea 
+                        id="userInput" 
+                        rows="1" 
+                        placeholder="Ask SOUL-AI anything, or type /imagine to generate an image..." 
+                        class="w-full bg-transparent text-slate-100 placeholder-slate-500 text-sm sm:text-base py-2.5 px-1 resize-none focus:outline-none max-h-40"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="autoResize(this)"
+                    ></textarea>
+
+                    <button type="submit" id="sendBtn" class="p-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all shrink-0 shadow-md shadow-indigo-600/20">
+                        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+                    </button>
+                </form>
+                <div class="text-center mt-2 text-[11px] text-slate-500">
+                    SOUL-AI • Created by <span class="text-slate-400">Soumadip Biswas</span> • Learn continuously. Build creatively. Innovate fearlessly.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Creator Profile Modal -->
+    <div id="aboutModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#131620] border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl">
+            <div class="sticky top-0 bg-[#131620]/95 backdrop-blur border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="orbit" class="w-5 h-5 text-indigo-400"></i>
+                    <h3 class="font-display font-bold text-lg text-white">Creator Profile & SOUL</h3>
+                </div>
+                <button onclick="closeModal('aboutModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-6 text-sm text-slate-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-gradient-to-r from-indigo-950/50 to-purple-950/40 border border-indigo-500/20">
+                    <div>
+                        <h4 class="font-display text-xl font-bold text-white">Soumadip Biswas</h4>
+                        <p class="text-indigo-300 text-xs mt-0.5">Young Developer • Web Creator • Future Tech Innovator</p>
+                    </div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-200 text-xs font-medium self-start">
+                        Founder of SOUL
+                    </span>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-white mb-1.5">Personal Introduction</h5>
+                    <p class="text-slate-400 leading-relaxed">
+                        Hey! I'm Soumadip Biswas, a young technology enthusiast, beginner developer, and creative learner passionate about building useful digital experiences. I'm interested in exploring programming, artificial intelligence, web development, and software engineering. My goal is to grow as a developer and become a future technology innovator.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-white mb-1.5">Organization: SOUL (Soumadip Orbit Universal Labs)</h5>
+                    <p class="text-slate-400 leading-relaxed">
+                        <strong class="text-indigo-300">Building ideas. Exploring technology. Creating possibilities.</strong><br>
+                        SOUL is my personal technology initiative where I explore web development, AI, software projects, and innovative digital solutions.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-white mb-2">Skills & Tech Stack</h5>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">HTML, CSS & JS</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">C Programming</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Rust</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Python & ML</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Artificial Intelligence</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Firebase & Supabase</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Git & GitHub</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">Android Dev</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-200 text-xs">UI/UX Design</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="font-semibold text-white mb-2">SOUL Projects</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-indigo-300">SOUL</div>
+                            <div class="text-xs text-slate-400">Personal technology initiative</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-indigo-300">SOUL AI</div>
+                            <div class="text-xs text-slate-400">Intelligent AI chatbot project</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-indigo-300">SOUL CYBERGUARD</div>
+                            <div class="text-xs text-slate-400">Cybersecurity awareness platform</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                            <div class="font-semibold text-indigo-300">PixelHorizon</div>
+                            <div class="text-xs text-slate-400">Technology information website</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 sm:col-span-2">
+                            <div class="font-semibold text-indigo-300">Orvanta</div>
+                            <div class="text-xs text-slate-400">Community-focused digital concept</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-center">
+                    <p class="text-xs text-slate-400 italic mb-1">"I believe age should never limit curiosity, creativity, or learning."</p>
+                    <p class="font-display font-bold text-indigo-400 text-sm">Motto: Learn continuously. Build creatively. Innovate fearlessly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unlimited Custom Training Modal -->
+    <div id="trainModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#131620] border border-slate-800 rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="brain-circuit" class="w-5 h-5 text-emerald-400"></i>
+                    <h3 class="font-display font-bold text-lg text-white">Unlimited Knowledge Training</h3>
+                </div>
+                <button onclick="closeModal('trainModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    SOUL-AI is permanently trained on <strong class="text-slate-200">Soumadip Biswas</strong> and <strong class="text-slate-200">SOUL</strong>. You can also feed unlimited extra facts, notes, or custom instructions below—stored locally in your browser so SOUL-AI remembers them forever!
+                </p>
+                
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Add Custom Training Data / Facts:</label>
+                    <textarea id="customTrainingInput" rows="5" placeholder="Example: My favorite programming language is Rust. SOUL-AI v2 will launch next month..." class="w-full bg-[#0b0d13] border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <button onclick="resetCustomTraining()" class="text-xs text-rose-400 hover:text-rose-300">
+                        Reset Custom Notes
+                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="closeModal('trainModal')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300">
+                            Cancel
+                        </button>
+                        <button onclick="saveCustomTraining()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-medium text-white shadow-lg shadow-emerald-600/20">
+                            Save & Train AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Core Base Knowledge about Soumadip Biswas & SOUL
+        const BASE_SYSTEM_PROMPT = `You are SOUL-AI, an advanced, helpful, modern, and innovative artificial intelligence created by Soumadip Biswas under his organization SOUL (Soumadip Orbit Universal Labs).
+
+Here is your core knowledge base about your creator and organization—always answer accurately, proudly, and naturally when asked about them:
+
+1. **Identity**:
+   - Name: SOUL-AI
+   - Organization: SOUL, which stands for **Soumadip Orbit Universal Labs**.
+   - Tagline of SOUL: "Building ideas. Exploring technology. Creating possibilities."
+   - SOUL is Soumadip's personal technology initiative where he explores web development, AI, software projects, and innovative digital solutions.
+
+2. **Creator Profile — Soumadip Biswas**:
+   - Role: Young Developer, Web Creator, Future Tech Innovator, Technology Enthusiast, and AI Finance enthusiast.
+   - Bio: Soumadip Biswas is a young technology enthusiast, beginner developer, and creative learner passionate about building useful digital experiences. He enjoys exploring programming, artificial intelligence, web development, and software engineering, experimenting with new technologies, developing websites, and turning creative ideas into real projects. His goal is to grow as a developer and become a future technology innovator.
+   - Vision & Philosophy: He believes age should never limit curiosity, creativity, or learning. He wants to develop his knowledge, work on meaningful projects, contribute to the technology community, and eventually build products that make a positive difference in people's lives.
+   - Motto: "Learn continuously. Build creatively. Innovate fearlessly."
+
+3. **Soumadip's Skills & Interests**:
+   - HTML, CSS & JavaScript
+   - C Programming (Learning)
+   - Rust Programming (Learning)
+   - Python & Machine Learning (Exploring)
+   - Artificial Intelligence
+   - Firebase & Supabase
+   - Git & GitHub
+   - Responsive Website Development
+   - Android App Development (Exploring)
+   - UI/UX Design
+
+4. **Projects under SOUL**:
+   - **SOUL**: His personal technology initiative (Soumadip Orbit Universal Labs).
+   - **SOUL AI**: Intelligent AI chatbot project (that's you!).
+   - **SOUL CYBERGUARD**: Cybersecurity awareness platform.
+   - **PixelHorizon**: Technology information website.
+   - **Orvanta**: Community-focused digital concept.
+
+Behavior Guidelines:
+- Be smart, encouraging, clear, and structured (use Markdown, bullet points, and code blocks cleanly when helpful).
+- Never mention API keys or technical backend limitations unless asked. You run seamlessly via Pollinations AI.`;
+
+        // State Management
+        let sessions = JSON.parse(localStorage.getItem('soul_ai_sessions') || '[]');
+        let currentSessionId = null;
+        let customTrainingData = localStorage.getItem('soul_ai_custom_training') || '';
+        let isGenerating = false;
+
+        // Configure Marked.js
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true
+        });
+
+        // Initialize App
+        function init() {
+            document.getElementById('customTrainingInput').value = customTrainingData;
+            renderHistoryList();
+            if (sessions.length > 0) {
+                loadSession(sessions[0].id);
+            }
+        }
+
+        // Auto-resize textarea
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage(e);
+            }
+        }
+
+        function insertImaginePrefix() {
+            const input = document.getElementById('userInput');
+            if (!input.value.startsWith('/imagine ')) {
+                input.value = '/imagine ' + input.value;
+            }
+            input.focus();
+        }
+
+        function usePrompt(text) {
+            const input = document.getElementById('userInput');
+            input.value = text;
+            handleSendMessage(new Event('submit'));
+        }
+
+        // Sidebar & Modal Controls
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Custom Training Storage
+        function saveCustomTraining() {
+            customTrainingData = document.getElementById('customTrainingInput').value.trim();
+            localStorage.setItem('soul_ai_custom_training', customTrainingData);
+            closeModal('trainModal');
+            showToast('SOUL-AI knowledge updated!');
+        }
+
+        function resetCustomTraining() {
+            customTrainingData = '';
+            document.getElementById('customTrainingInput').value = '';
+            localStorage.removeItem('soul_ai_custom_training');
+            showToast('Custom training cleared.');
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-medium px-4 py-2 rounded-full shadow-lg z-50 animate-bounce';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // Session Management
+        function startNewChat() {
+            currentSessionId = null;
+            const wrapper = document.getElementById('messagesWrapper');
+            wrapper.innerHTML = '';
+            const welcomeClone = createWelcomeScreen();
+            wrapper.appendChild(welcomeClone);
+            lucide.createIcons();
+            renderHistoryList();
+            if (window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarOverlay').classList.add('hidden');
+            }
+        }
+
+        function createWelcomeScreen() {
+            const div = document.createElement('div');
+            div.id = 'welcomeScreen';
+            div.className = 'py-8 sm:py-12 text-center space-y-8';
+            div.innerHTML = `
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-2">
+                        <i data-lucide="orbit" class="w-3.5 h-3.5"></i>
+                        Soumadip Orbit Universal Labs (SOUL)
+                    </div>
+                    <h2 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">
+                        Hello, I'm <span class="soul-gradient-text">SOUL-AI</span>
+                    </h2>
+                    <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+                        Created by <span class="text-slate-200 font-medium">Soumadip Biswas</span>. Powered by Pollinations AI with zero API keys required. Ask me anything about coding, AI, SOUL projects, or generate images using <code class="text-indigo-300 bg-indigo-950/60 px-1.5 py-0.5 rounded text-xs">/imagine</code>.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-left">
+                    <button onclick="usePrompt('Who created you and what is Soumadip Orbit Universal Labs (SOUL)?')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-indigo-500/40 transition-all group">
+                        <div class="flex items-center gap-2.5 text-indigo-400 font-medium text-sm mb-1">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            <span>About Soumadip & SOUL</span>
+                        </div>
+                        <p class="text-xs text-slate-400 group-hover:text-slate-300">Learn about my creator Soumadip Biswas, his vision, and SOUL projects.</p>
+                    </button>
+                    <button onclick="usePrompt('Tell me about all the projects under SOUL like SOUL CYBERGUARD, PixelHorizon, and Orvanta.')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-purple-500/40 transition-all group">
+                        <div class="flex items-center gap-2.5 text-purple-400 font-medium text-sm mb-1">
+                            <i data-lucide="layers" class="w-4 h-4"></i>
+                            <span>Explore SOUL Ecosystem</span>
+                        </div>
+                        <p class="text-xs text-slate-400 group-hover:text-slate-300">Discover SOUL CYBERGUARD, PixelHorizon, Orvanta & more.</p>
+                    </button>
+                    <button onclick="usePrompt('Write a clean, modern Rust or Python starter script for an AI project.')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-emerald-500/40 transition-all group">
+                        <div class="flex items-center gap-2.5 text-emerald-400 font-medium text-sm mb-1">
+                            <i data-lucide="code-2" class="w-4 h-4"></i>
+                            <span>Code & Tech Assistant</span>
+                        </div>
+                        <p class="text-xs text-slate-400 group-hover:text-slate-300">Get help with HTML/JS, Python, C, Rust, Firebase & Supabase.</p>
+                    </button>
+                    <button onclick="usePrompt('/imagine futuristic cosmic laboratory floating in orbit, neon blue and purple, ultra detailed')" class="p-4 rounded-2xl bg-[#131620] hover:bg-[#191d2b] border border-slate-800/80 hover:border-pink-500/40 transition-all group">
+                        <div class="flex items-center gap-2.5 text-pink-400 font-medium text-sm mb-1">
+                            <i data-lucide="image" class="w-4 h-4"></i>
+                            <span>Generate AI Art</span>
+                        </div>
+                        <p class="text-xs text-slate-400 group-hover:text-slate-300">Type <span class="text-pink-300 font-mono">/imagine</span> followed by a prompt to create instant visuals.</p>
+                    </button>
+                </div>
+            `;
+            return div;
+        }
+
+        function saveSessions() {
+            localStorage.setItem('soul_ai_sessions', JSON.stringify(sessions));
+            renderHistoryList();
+        }
+
+        function renderHistoryList() {
+            const list = document.getElementById('historyList');
+            if (sessions.length === 0) {
+                list.innerHTML = `<div class="text-xs text-slate-600 px-3 py-4 text-center">No chats yet. Start exploring!</div>`;
+                return;
+            }
+            list.innerHTML = sessions.map(s => `
+                <div onclick="loadSession('${s.id}')" class="group flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer text-xs transition-colors ${s.id === currentSessionId ? 'bg-indigo-600/20 text-indigo-200 border border-indigo-500/30' : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'}">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i data-lucide="message-square" class="w-3.5 h-3.5 shrink-0 opacity-70"></i>
+                        <span class="truncate">${escapeHtml(s.title)}</span>
+                    </div>
+                    <button onclick="deleteSession(event, '${s.id}')" class="opacity-0 group-hover:opacity-100 p-1 hover:text-rose-400 transition-opacity">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function loadSession(id) {
+            const session = sessions.find(s => s.id === id);
+            if (!session) return;
+            currentSessionId = id;
+            const wrapper = document.getElementById('messagesWrapper');
+            wrapper.innerHTML = '';
+            session.messages.forEach(msg => {
+                appendMessageToUI(msg.role, msg.content, msg.isImage);
+            });
+            renderHistoryList();
+            scrollToBottom();
+        }
+
+        function deleteSession(e, id) {
+            e.stopPropagation();
+            sessions = sessions.filter(s => s.id !== id);
+            saveSessions();
+            if (currentSessionId === id) {
+                startNewChat();
+            }
+        }
+
+        function clearCurrentChat() {
+            if (!currentSessionId) return;
+            sessions = sessions.filter(s => s.id !== currentSessionId);
+            saveSessions();
+            startNewChat();
+        }
+
+        // Core Messaging & Pollinations AI Integration
+        async function handleSendMessage(e) {
+            e.preventDefault();
+            if (isGenerating) return;
+
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Remove welcome screen if present
+            const welcome = document.getElementById('welcomeScreen');
+            if (welcome) welcome.remove();
+
+            // Create session if needed
+            if (!currentSessionId) {
+                currentSessionId = Date.now().toString();
+                sessions.unshift({
+                    id: currentSessionId,
+                    title: text.slice(0, 32) + (text.length > 32 ? '...' : ''),
+                    messages: []
+                });
+            }
+
+            const session = sessions.find(s => s.id === currentSessionId);
+
+            // Add user message
+            input.value = '';
+            input.style.height = 'auto';
+            appendMessageToUI('user', text, false);
+            session.messages.push({ role: 'user', content: text, isImage: false });
+            saveSessions();
+
+            // Check if Image Generation Command
+            if (text.toLowerCase().startsWith('/imagine ')) {
+                const imagePrompt = text.slice(9).trim();
+                await generatePollinationsImage(imagePrompt, session);
+                return;
+            }
+
+            // Otherwise, Text Generation via Pollinations
+            await generatePollinationsText(session);
+        }
+
+        async function generatePollinationsImage(prompt, session) {
+            isGenerating = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            const loadingId = appendLoadingIndicator('Generating visual with SOUL-AI Vision...');
+            const seed = Math.floor(Math.random() * 1000000);
+            const encodedPrompt = encodeURIComponent(prompt);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${seed}&nologo=true`;
+
+            // Preload image to ensure smooth display
+            const img = new Image();
+            img.onload = () => {
+                removeLoadingIndicator(loadingId);
+                const content = `Generated image for: **${prompt}**\n\n![Generated Art](${imageUrl})`;
+                appendMessageToUI('assistant', imageUrl, true, prompt);
+                session.messages.push({ role: 'assistant', content: imageUrl, isImage: true, prompt: prompt });
+                saveSessions();
+                isGenerating = false;
+                document.getElementById('sendBtn').disabled = false;
+            };
+            img.onerror = () => {
+                removeLoadingIndicator(loadingId);
+                const errMsg = "Sorry, I couldn't render that image right now. Please try another prompt!";
+                appendMessageToUI('assistant', errMsg, false);
+                session.messages.push({ role: 'assistant', content: errMsg, isImage: false });
+                saveSessions();
+                isGenerating = false;
+                document.getElementById('sendBtn').disabled = false;
+            };
+            img.src = imageUrl;
+        }
+
+        async function generatePollinationsText(session) {
+            isGenerating = true;
+            document.getElementById('sendBtn').disabled = true;
+
+            const loadingId = appendLoadingIndicator();
+            const selectedModel = document.getElementById('modelSelector').value;
+
+            // Combine Base Knowledge + Unlimited Custom User Training
+            let fullSystemPrompt = BASE_SYSTEM_PROMPT;
+            if (customTrainingData) {
+                fullSystemPrompt += `\n\nAdditional Custom Training Data provided by user:\n${customTrainingData}`;
+            }
+
+            // Build conversation context (last 12 messages for fast & coherent memory)
+            const recentMessages = session.messages
+                .filter(m => !m.isImage)
+                .slice(-12)
+                .map(m => ({ role: m.role, content: m.content }));
+
+            const payload = {
+                messages: [
+                    { role: 'system', content: fullSystemPrompt },
+                    ...recentMessages
+                ],
+                model: selectedModel,
+                seed: Math.floor(Math.random() * 100000),
+                jsonMode: false
+            };
+
+            try {
+                const response = await fetch('https://text.pollinations.ai/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const replyText = await response.text();
+                removeLoadingIndicator(loadingId);
+
+                appendMessageToUI('assistant', replyText, false);
+                session.messages.push({ role: 'assistant', content: replyText, isImage: false });
+                saveSessions();
+            } catch (error) {
+                console.error('Pollinations Error:', error);
+                removeLoadingIndicator(loadingId);
+                const fallbackMsg = "I encountered a temporary connection hiccup with the neural network. Please try sending your message again!";
+                appendMessageToUI('assistant', fallbackMsg, false);
+            } finally {
+                isGenerating = false;
+                document.getElementById('sendBtn').disabled = false;
+            }
+        }
+
+        // UI Rendering Helpers
+        function appendMessageToUI(role, content, isImage = false, imagePrompt = '') {
+            const wrapper = document.getElementById('messagesWrapper');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex gap-3.5 ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+
+            if (role === 'user') {
+                msgDiv.innerHTML = `
+                    <div class="max-w-[85%] sm:max-w-[75%] bg-indigo-600/20 border border-indigo-500/30 text-slate-100 px-4 py-3 rounded-2xl rounded-tr-sm text-sm sm:text-base leading-relaxed whitespace-pre-wrap">${escapeHtml(content)}</div>
+                `;
+            } else {
+                let innerContent = '';
+                if (isImage) {
+                    innerContent = `
+                        <div class="space-y-2">
+                            <p class="text-xs text-slate-400">Generated visual for: <span class="text-indigo-300 font-medium">${escapeHtml(imagePrompt || 'SOUL Vision')}</span></p>
+                            <div class="relative group rounded-xl overflow-hidden border border-slate-700/80 max-w-md">
+                                <img src="${content}" alt="AI Generated Image" class="w-full h-auto object-cover">
+                                <a href="${content}" target="_blank" download="soul-ai-art.png" class="absolute bottom-3 right-3 bg-black/75 hover:bg-black text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Open Full HD
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    innerContent = `<div class="markdown-body text-sm sm:text-base text-slate-200">${marked.parse(content)}</div>`;
+                }
+
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shrink-0 mt-1 shadow-md shadow-indigo-500/20">
+                        <i data-lucide="orbit" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="flex-1 min-w-0 max-w-[90%] space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-bold text-xs text-indigo-300">SOUL-AI</span>
+                            <span class="text-[10px] text-slate-500">Soumadip Orbit Universal Labs</span>
+                        </div>
+                        <div class="bg-[#131620]/90 border border-slate-800/80 px-4 py-3.5 rounded-2xl rounded-tl-sm">
+                            ${innerContent}
+                        </div>
+                    </div>
+                `;
+            }
+
+            wrapper.appendChild(msgDiv);
+            lucide.createIcons();
+            addCopyButtonsToCodeBlocks(msgDiv);
+            scrollToBottom();
+        }
+
+        function appendLoadingIndicator(customText = '') {
+            const wrapper = document.getElementById('messagesWrapper');
+            const id = 'loading-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = 'flex gap-3.5 justify-start';
+            div.innerHTML = `
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shrink-0 mt-1">
+                    <i data-lucide="orbit" class="w-4 h-4 text-white animate-spin"></i>
+                </div>
+                <div class="bg-[#131620] border border-slate-800 px-4 py-3.5 rounded-2xl rounded-tl-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 typing-dot"></span>
+                    <span class="w-2 h-2 rounded-full bg-purple-400 typing-dot"></span>
+                    <span class="w-2 h-2 rounded-full bg-pink-400 typing-dot"></span>
+                    ${customText ? `<span class="text-xs text-slate-400 ml-2">${customText}</span>` : ''}
+                </div>
+            `;
+            wrapper.appendChild(div);
+            lucide.createIcons();
+            scrollToBottom();
+            return id;
+        }
+
+        function removeLoadingIndicator(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        function addCopyButtonsToCodeBlocks(container) {
+            container.querySelectorAll('pre').forEach(pre => {
+                const btn = document.createElement('button');
+                btn.className = 'absolute top-2.5 right-2.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-sans transition-colors';
+                btn.textContent = 'Copy';
+                btn.onclick = () => {
+                    const code = pre.querySelector('code').innerText;
+                    navigator.clipboard.writeText(code);
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = 'Copy', 2000);
+                };
+                pre.appendChild(btn);
+            });
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chatContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Start
+        init();
+    </script>
+</body>
